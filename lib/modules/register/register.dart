@@ -1,5 +1,7 @@
+import 'package:chat_app/base.dart';
+import 'package:chat_app/modules/login/login_screen.dart';
+import 'package:chat_app/modules/register/navigator.dart';
 import 'package:chat_app/modules/register/register_view_model.dart';
-import 'package:chat_app/modules/register/states.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +12,8 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> implements States {
+class _RegisterScreenState extends BaseState<RegisterScreen, RegisterViewModel>
+    implements RegisterNavigator {
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
 
   var firstNameController = TextEditingController();
@@ -23,12 +26,15 @@ class _RegisterScreenState extends State<RegisterScreen> implements States {
 
   var passwordController = TextEditingController();
 
-  RegisterViewModel viewModel = RegisterViewModel();
+  @override
+  RegisterViewModel initalViewModel() {
+    return RegisterViewModel();
+  }
 
   @override
   void initState() {
     super.initState();
-    viewModel.states = this;
+    viewModel.navigator = this;
   }
 
   @override
@@ -116,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements States {
                                 return 'Please Enter Your Email';
                               }
                               bool emailValid = RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(text);
                               if (!emailValid) {
                                 return 'Email Not Valid';
@@ -141,13 +147,28 @@ class _RegisterScreenState extends State<RegisterScreen> implements States {
                             },
                           ),
                           SizedBox(
-                            height: 70,
+                            height: 50,
                           ),
                           ElevatedButton(
                             onPressed: () {
                               RegisterBottonFunction();
                             },
                             child: Text('Create Email'),
+                          ),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Center(
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, LoginScreen.routeName);
+                                },
+                                child: Text(
+                                  'Already Have An Account',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.blue),
+                                )),
                           )
                         ],
                       ),
@@ -167,34 +188,5 @@ class _RegisterScreenState extends State<RegisterScreen> implements States {
       //  create account with firebase
       viewModel.CreateAccount(emailController.text, passwordController.text);
     }
-  }
-
-  @override
-  void hideLoading() {
-    Navigator.pop(context);
-  }
-
-  @override
-  void showLoading() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Center(
-            child: CircularProgressIndicator(),
-          ));
-        });
-  }
-
-  @override
-  void showMessage(String message) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-              title: Row(
-            children: [Expanded(child: Text(message))],
-          ));
-        });
   }
 }

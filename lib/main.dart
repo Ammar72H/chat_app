@@ -1,3 +1,4 @@
+import 'package:chat_app/modules/login/login_screen.dart';
 import 'package:chat_app/modules/register/register.dart';
 import 'package:chat_app/shared/styles/my_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,9 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: RegisterScreen.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
         RegisterScreen.routeName: (context) => RegisterScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
       },
       theme: MyThemeData.lightTheme,
     );
