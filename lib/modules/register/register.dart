@@ -1,9 +1,13 @@
 import 'package:chat_app/base.dart';
+import 'package:chat_app/modules/hame/home.dart';
 import 'package:chat_app/modules/login/login_screen.dart';
 import 'package:chat_app/modules/register/navigator.dart';
 import 'package:chat_app/modules/register/register_view_model.dart';
+import 'package:chat_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../models/my_user.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register';
@@ -186,7 +190,19 @@ class _RegisterScreenState extends BaseState<RegisterScreen, RegisterViewModel>
   void RegisterBottonFunction() async {
     if (keyForm.currentState!.validate()) {
       //  create account with firebase
-      viewModel.CreateAccount(emailController.text, passwordController.text);
+      viewModel.CreateAccount(
+          emailController.text,
+          passwordController.text,
+          firstNameController.text,
+          lastNameController.text,
+          userNameController.text);
     }
+  }
+
+  @override
+  void goToHome(MyUser user) {
+    var userProvider = Provider.of<UserProvider>(context);
+    userProvider.user = user;
+    Navigator.pushReplacementNamed(context, HomeScreen.routeName);
   }
 }

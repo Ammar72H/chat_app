@@ -3,6 +3,8 @@ import 'package:chat_app/constant.dart';
 import 'package:chat_app/modules/login/navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../database/database_utils.dart';
+
 class LoginViewModel extends BaseViewModel<LoginNavigator> {
   var firebaseAuth = FirebaseAuth.instance;
 
@@ -10,9 +12,16 @@ class LoginViewModel extends BaseViewModel<LoginNavigator> {
     String? message = null;
     try {
       navigator?.showLoading('Loading...', false);
-      await firebaseAuth.signInWithEmailAndPassword(
+      var result = await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      navigator?.hideLoading();
+      var user = await DataBaseUtils.readUser(result.user?.uid ?? '');
+
+      if (user == null) {
+        message = 'Failed to Sine in , Please try again ...';
+      } else {
+        navigator?.hideLoading();
+        navigator?.goToHome(user);
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == FirebaseErrors.USERNOTFOUND) {
         message = 'No user found for that email.';

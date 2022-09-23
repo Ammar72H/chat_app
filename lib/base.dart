@@ -44,14 +44,20 @@ abstract class BaseState<T extends StatefulWidget, VM extends BaseViewModel>
   }
 
   @override
-  void showMessage(String message) {
+  void showMessage(String message,
+      {String? actionName, VoidCallback? voidCallback}) {
+    List<Widget> actions = [];
+    if (actionName != null) {
+      actions.add(TextButton(onPressed: voidCallback, child: Text(actionName)));
+    }
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
+              actions: actions,
               title: Row(
-            children: [Expanded(child: Text(message))],
-          ));
+                children: [Expanded(child: Text(message))],
+              ));
         });
   }
 }
