@@ -75,6 +75,7 @@ class _AddRoomState extends BaseState<AddRoom, AddRoomViewModel>
                     )),
                     Image.asset('assets/images/room_bg.png'),
                     TextFormField(
+                      style: TextStyle(fontSize: 16),
                       controller: roomNameController,
                       decoration: InputDecoration(labelText: 'Room Name'),
                       validator: (text) {
@@ -84,41 +85,43 @@ class _AddRoomState extends BaseState<AddRoom, AddRoomViewModel>
                         return null;
                       },
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButton<Category>(
-                              value: selectedCategory,
-                              items: categories
-                                  .map((catId) => DropdownMenuItem<Category>(
-                                      value: catId,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Image.asset(
-                                            catId.image,
-                                            height: 50,
-                                            width: 60,
-                                          ),
-                                          SizedBox(
-                                            width: 12,
-                                          ),
-                                          Text(catId.name),
-                                        ],
-                                      )))
-                                  .toList(),
-                              onChanged: (category) {
-                                if (category == null) {
-                                  return;
-                                } else {
-                                  selectedCategory = category;
-                                }
-                              }),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      decoration:
+                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                      child: DropdownButton<Category>(
+                          underline: SizedBox(),
+                          isExpanded: true,
+                          value: selectedCategory,
+                          items: categories
+                              .map((catId) => DropdownMenuItem<Category>(
+                                  value: catId,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Image.asset(
+                                        catId.image,
+                                        height: 35,
+                                        width: 60,
+                                      ),
+                                      Spacer(),
+                                      Text(catId.name),
+                                    ],
+                                  )))
+                              .toList(),
+                          onChanged: (category) {
+                            if (category == null) {
+                              return;
+                            } else {
+                              selectedCategory = category;
+                            }
+                          }),
                     ),
                     TextFormField(
+                      style: TextStyle(fontSize: 16),
                       controller: roomDescController,
                       decoration:
                           InputDecoration(labelText: 'Room Description'),
@@ -129,7 +132,14 @@ class _AddRoomState extends BaseState<AddRoom, AddRoomViewModel>
                         return null;
                       },
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFF3598DB)),
+                        ),
                         onPressed: () {
                           validateForm();
                         },
