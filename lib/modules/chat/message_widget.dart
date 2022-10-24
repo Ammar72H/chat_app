@@ -35,6 +35,7 @@ class SendMessage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(message.dateTime.toString()),
+          // Text(DateFormat().format(message.dateTime)),
           Expanded(
               child: Container(
                   padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),

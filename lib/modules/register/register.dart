@@ -202,7 +202,7 @@ class _RegisterScreenState extends BaseState<RegisterScreen, RegisterViewModel>
   @override
   void goToHome(MyUser user) {
     var userProvider = Provider.of<UserProvider>(context);
-    userProvider.user = user;
     Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    userProvider.user = user;
   }
 }
